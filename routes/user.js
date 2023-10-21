@@ -12,8 +12,6 @@ const router = express.Router();
 router.get("/all", getAllUsers);
 router.post("/new", register);
 router.post("/login", login);
-
-// shorthand router, if route is same
-router.route("/me", getMyProfile);
+router.get("/me", getMyProfile);
 
 export default router;

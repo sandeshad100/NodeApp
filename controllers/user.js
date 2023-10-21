@@ -42,8 +42,16 @@ export const register = async (req, res) => {
 export const getMyProfile = async (req, res) => {
   const id = "id";
   const { token } = req.cookies;
+  console.log(token);
 
-  const user = await User.findById(id);
+  if (!token) {
+    return res.status(404).json({
+      success: false,
+      message: "Login  First",
+    });
+  }
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const user = await User.findById(decoded._id);
   res.status(200).json({
     success: true,
     user,
