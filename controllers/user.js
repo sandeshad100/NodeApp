@@ -39,21 +39,22 @@ export const register = async (req, res) => {
   sendCookie(user, res, "Registered Successfully", 201);
 };
 
-export const getMyProfile = async (req, res) => {
-  const id = "id";
-  const { token } = req.cookies;
-  console.log(token);
-
-  if (!token) {
-    return res.status(404).json({
-      success: false,
-      message: "Login  First",
-    });
-  }
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  const user = await User.findById(decoded._id);
+export const getMyProfile = (req, res) => {
   res.status(200).json({
     success: true,
-    user,
+    user: req.user,
   });
+};
+
+export const logout = async (req, res) => {
+  //   res.cookie("token", null, {
+  //     httpOnly: true,
+  //     expires: new Date(Date.now()),
+  //   });
+  //   res.redirect("/");
+
+  res
+    .status(200)
+    .cookie("token", "", { expires: new Date(Date.now()) })
+    .json({ success: true, user: req.user });
 };
