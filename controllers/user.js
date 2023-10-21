@@ -1,59 +1,14 @@
 import { User } from "../models/user.js";
+import bcrypt from "bcrypt";
 
-export const getAllUsers = async (req, res) => {
-  const users = await User.find({});
+export const getAllUsers = async (req, res) => {};
 
-  res.json({
-    success: true,
-    users,
-  });
-};
+export const login = async (req, res,next) => {};
 
-export const register = async (req, res) => {
-  const { name, email, password } = req.body;
+export const register = async (req, res) => {};
 
-  await User.create({
-    name,
-    email,
-    password,
-  });
+export const getUserDetailes = async (req, res) => {};
 
-  //cookies are not optional
-  res.status(201).cookie("data", "mydata").json({
-    success: true,
-    message: "Registered Successfully",
-  });
-};
 
-export const getUserDetailes = async (req, res) => {
-  const { id } = req.params;
-  console.log(req.params);
-  const user = await User.findById(id);
 
-  res.json({
-    success: true,
-    user,
-  });
-};
 
-export const updateUser = async (req, res) => {
-  const { id } = req.params;
-  console.log(req.params);
-  const user = await User.findById(id);
-
-  res.json({
-    success: true,
-    message: "Updated",
-  });
-};
-
-export const deleteUser = async (req, res) => {
-  const { id } = req.params;
-  console.log(req.params);
-  const user = await User.findById(id);
-
-  res.json({
-    success: true,
-    message: "Deleted",
-  });
-};
