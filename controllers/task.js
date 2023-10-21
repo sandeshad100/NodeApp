@@ -25,6 +25,12 @@ export const getMyTask = async (req, res, next) => {
 };
 export const updateTask = async (req, res, next) => {
   const task = await Task.findById(req.params.id);
+
+  if (!task)
+    return res.status(404).json({
+      success: false,
+      message: "Invalid Id",
+    });
   task.isCompleted = !task.isCompleted;
   await task.save();
 
@@ -37,7 +43,13 @@ export const updateTask = async (req, res, next) => {
 export const deleteTask = async (req, res, next) => {
   const task = await Task.findById(req.params.id);
 
-  await task.remove();
+  if (!task)
+    return res.status(404).json({
+      success: false,
+      message: "Invalid Id",
+    });
+
+  await task.deleteOne();
 
   res.status(200).json({
     success: true,
