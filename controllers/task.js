@@ -27,7 +27,7 @@ export const getMyTask = async (req, res, next) => {
 export const updateTask = async (req, res, next) => {
   const task = await Task.findById(req.params.id);
 
-  if (!task) return next(new Error("Invalid ID"));
+  if (!task) return next(new ErrorHandler("Task not found", 404));
 
   task.isCompleted = !task.isCompleted;
   await task.save();

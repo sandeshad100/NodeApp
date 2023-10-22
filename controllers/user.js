@@ -8,18 +8,11 @@ export const getAllUsers = async (req, res) => {};
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email }).select("+password");
-  if (!user)
-    return res.status(404).json({
-      success: false,
-      message: "Invalid Email and Password",
-    });
+  if (!user) return next(new ErrorHandler("Invalid Email and Password", 400));
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch)
-    return res.status(404).json({
-      success: false,
-      message: "Invalid Email and Password",
-    });
+    return next(new ErrorHandler("Invalid Email and Password", 400));
 
   sendCookie(user, res, `Welcome back, ${user.name}`, 200);
 };
@@ -28,11 +21,13 @@ export const register = async (req, res) => {
   const { name, email, password } = req.body;
   let user = await User.findOne({ email });
 
-  if (user)
-    return res.status(404).json({
-      success: false,
-      message: "User already exists",
-    });
+  // if (user)
+  //   return res.status(404).json({
+  //     success: false,
+  //     message: "User already exists",
+  //   });
+
+  if (user) return next(new ErrorHandler("User already exists", 400));
 
   const hashedPassword = await bcrypt.hash(password, 10);
   user = await User.create({ name, email, password: hashedPassword });
