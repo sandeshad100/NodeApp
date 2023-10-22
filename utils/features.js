@@ -8,6 +8,10 @@ export const sendCookie = (user, res, message, statusCode) => {
     .cookie("token", token, {
       httpOnly: true,
       maxAge: 15 * 60 * 1000,
+
+      //sameSite is none because Backend URL and Frontend URL could be different, if sameSite is none also set SECURE to TRUE
+      sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
+      secure: process.env.NODE_ENV === "Development" ? false : true,
     })
     .json({
       success: true,
