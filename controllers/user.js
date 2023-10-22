@@ -1,6 +1,5 @@
 import { User } from "../models/user.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { sendCookie } from "../utils/features.js";
 
 export const login = async (req, res, next) => {
@@ -19,7 +18,7 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     let user = await User.findOne({ email });
